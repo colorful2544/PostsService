@@ -23,15 +23,6 @@ namespace PostsService.Models.db
         public virtual DbSet<PostsLike> PostsLikes { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-C0DF678\\SQLEXPRESS;Database=PostsService;Trusted_Connection=True;");
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Thai_CI_AS");
@@ -52,10 +43,7 @@ namespace PostsService.Models.db
                     .HasMaxLength(256)
                     .HasColumnName("detail");
 
-                entity.Property(e => e.UserId)
-                    .IsRequired()
-                    .HasMaxLength(256)
-                    .HasColumnName("userId");
+                entity.Property(e => e.UserId).HasColumnName("userId");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Posts)
@@ -81,10 +69,7 @@ namespace PostsService.Models.db
                     .HasMaxLength(256)
                     .HasColumnName("postId");
 
-                entity.Property(e => e.UserId)
-                    .IsRequired()
-                    .HasMaxLength(256)
-                    .HasColumnName("userId");
+                entity.Property(e => e.UserId).HasColumnName("userId");
 
                 entity.HasOne(d => d.Post)
                     .WithMany(p => p.PostsComments)
@@ -139,10 +124,7 @@ namespace PostsService.Models.db
                     .HasMaxLength(256)
                     .HasColumnName("postId");
 
-                entity.Property(e => e.UserId)
-                    .IsRequired()
-                    .HasMaxLength(256)
-                    .HasColumnName("userId");
+                entity.Property(e => e.UserId).HasColumnName("userId");
 
                 entity.HasOne(d => d.Post)
                     .WithMany(p => p.PostsLikes)
@@ -159,9 +141,7 @@ namespace PostsService.Models.db
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .HasMaxLength(256)
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Created)
                     .HasColumnType("datetime")

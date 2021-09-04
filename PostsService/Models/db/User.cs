@@ -14,7 +14,7 @@ namespace PostsService.Models.db
             PostsLikes = new HashSet<PostsLike>();
         }
 
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Username { get; set; }
         public DateTime Created { get; set; }
         public string ImageName { get; set; }
