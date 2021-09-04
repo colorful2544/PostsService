@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PostsService.Interface;
 using PostsService.Models.db;
+using PostsService.Services.ImageUploadService;
 using PostsService.Services.PostService;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace PostsService
                 option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddTransient<IPostService, PostService>();
+            services.AddTransient<IImageUploadService, ImageUploadService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
