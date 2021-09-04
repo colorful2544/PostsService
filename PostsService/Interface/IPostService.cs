@@ -1,4 +1,4 @@
-﻿using PostsService.Models.db;
+﻿using PostsService.ViewModels.PostServiceViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +8,6 @@ namespace PostsService.Interface
 {
     public interface IPostService
     {
-
+        public void Create(PostRequest data);
     }
 }
