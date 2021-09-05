@@ -19,7 +19,8 @@ namespace PostsService.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var result = _postService.Get();
+            return View(result);
         }
         public IActionResult Create()
         {

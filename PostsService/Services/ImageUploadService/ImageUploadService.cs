@@ -36,13 +36,13 @@ namespace PostsService.Services.ImageUploadService
             var fileName = Path.GetFileName(file.FileName);
             var fileExt = Path.GetExtension(fileName);
             var tmpName = Guid.NewGuid().ToString();
-            var newFileName = $"{tmpName}{fileExt}";
+            var newFileName = string.Concat(tmpName, fileExt);
             var path = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot","images")).Root + $@"\{newFileName}";
-                
-            using (var stream = new FileStream(path, FileMode.Create))
+
+            using (FileStream fs = File.Create(path))
             {
-                stream.CopyTo(stream);
-                stream.Flush();
+                file.CopyTo(fs);
+                fs.Flush();
             }
             Console.WriteLine(newFileName);
             return newFileName;

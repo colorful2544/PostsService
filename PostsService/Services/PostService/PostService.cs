@@ -1,4 +1,5 @@
-﻿using PostsService.Interface;
+﻿using Microsoft.EntityFrameworkCore;
+using PostsService.Interface;
 using PostsService.Models.db;
 using PostsService.ViewModels.PostServiceViewModel;
 using System;
@@ -17,7 +18,27 @@ namespace PostsService.Services.PostService
             _db = db;
             _imageUpload = imageUpload;
         }
+        public List<PostResponse> Get()
+        {
+            List<PostResponse> response = new List<PostResponse>();
 
+            var posts = GetPosts();
+            foreach (var post in posts)
+            {
+                var images = GetImages(post.Id);
+                var likesCount = GetLikesCount(post.Id);
+
+                PostResponse item = new PostResponse 
+                { 
+                    name = post.User.Username,
+                    imagesList = images,
+                    likesCount = likesCount,
+                };
+                response.Add(item);
+            }
+            
+            return response;
+        }
         public string Create(PostRequest data)
         {
             if(data != null)
@@ -52,6 +73,21 @@ namespace PostsService.Services.PostService
                 }
             }
             return string.Empty;
+        }
+        private List<Post> GetPosts()
+        {
+            var post = _db.Posts.Include(u => u.User).OrderByDescending(p => p.Created).ToList();
+            return post;
+        }
+        private List<string> GetImages(string id)
+        {
+            var images = _db.PostsImages.Where(u => u.PostId == id).Select(i => i.ImageName).ToList();
+            return images;
+        }
+        private int GetLikesCount(string id)
+        {
+            var likesCount = _db.PostsLikes.Where(p => p.PostId == id).Count();
+            return likesCount;
         }
     }
 }
